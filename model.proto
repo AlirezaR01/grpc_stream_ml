@@ -1,0 +1,21 @@
+syntax = "proto3";
+
+package video_streaming;
+
+service VideoStream {
+    rpc StreamFrames(stream VideoFrame) returns (stream Model_Data) {}
+}
+
+message VideoFrame {
+    bytes frame_data = 1;
+    int32 id = 2;
+}
+
+message Model_Data{
+    int32 x1 = 1;
+    int32 y1 = 2;
+    int32 x2 = 3;
+    int32 y2 = 4;
+    float confidence = 5;
+    int32 id = 6;
+}
