@@ -7,21 +7,27 @@ import numpy as np
 from Pylon_Model import Pylon_Model
 from datetime import datetime
 model = Pylon_Model("best.pt")
+global img
 class VideoStreamServicer(pb2_grpc.VideoStreamServicer):
+    global img
     def StreamFrames(self, request_iterator, context):
         for frame in request_iterator:
             # Process the received frame
 
             print("_________________________________________")
             print(f"Frame {frame.id} recived at {datetime.utcnow()}")
+            recived_time = datetime.utcnow()
             frame_data = np.frombuffer(frame.frame_data, dtype=np.uint8)
             id = frame.id
+            
             img = cv2.imdecode(frame_data, cv2.IMREAD_COLOR)
-            bbox = model.Run_Model(img)
-            
-            
-            response = pb2.Model_Data(x1=bbox[0], y1=bbox[1], x2=bbox[2], y2=bbox[3], confidence=bbox[4] , id = id)
+            bbox , run_time = model.Run_Model(img)
             print(f"Result of frame {frame.id} sent at {datetime.utcnow()}")
+            sent_time = datetime.utcnow()
+            response = pb2.Model_Data(x1=bbox[0], y1=bbox[1], x2=bbox[2], y2=bbox[3], confidence=bbox[4] ,
+                                       id = id , server_recived=str(recived_time ), server_sent=str(sent_time)
+                                       , model_runtime = run_time)
+            
             yield response
 
 def serve():

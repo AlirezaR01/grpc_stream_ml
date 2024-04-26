@@ -6,22 +6,44 @@ import model_pb2_grpc as pb2_grpc
 import numpy as np
 from datetime import datetime
 import json
+import csv
 
+
+csv_file_path = 'res.csv'
+
+def write_to_csv(frame_id,client_sent, server_recived , model_runtime ,server_sent , client_recived):
+    with open(csv_file_path, mode='a', newline='') as file:
+        writer = csv.writer(file)
+        writer.writerow([frame_id,client_sent, server_recived , model_runtime,server_sent , client_recived])
+
+try:
+    open(csv_file_path, 'x')
+    write_to_csv("id" , "Client Sent" , "Server Recived" , "Model runtime" , 
+                 "Server sent" , "Client Recived")
+except FileExistsError:
+    pass  # File already exists
+        
 def read_parameters_from_json(json_file):
     with open(json_file, 'r') as f:
         parameters = json.load(f)
     return parameters
+
+try:
+    open(csv_file_path, 'x')
+except FileExistsError:
+    pass  # File alr
+
 config = read_parameters_from_json('config.json')
 
 def generate_frames():
     # Replace this with your video capture logic
     id = 0
+    print("starting the camera")
     camera_index = config.get("camera")
-    fps = config.get("fps")
+    delay = config.get("delay")
     video_capture = cv2.VideoCapture(camera_index)
-    video_capture.set(cv2.CAP_PROP_FRAME_WIDTH, 1280)
-    video_capture.set(cv2.CAP_PROP_FRAME_HEIGHT, 720)
-    video_capture.set(cv2.CAP_PROP_FPS, fps)
+    video_capture.set(cv2.CAP_PROP_FRAME_WIDTH, 1920)
+    video_capture.set(cv2.CAP_PROP_FRAME_HEIGHT, 1080)
     while True:
         ret, frame = video_capture.read()
         if not ret:
@@ -33,12 +55,17 @@ def generate_frames():
         print("__________________________________________")
         print(f"Frame sent at {datetime.utcnow()}")
         yield pb2.VideoFrame(frame_data=frame_data.tobytes() , id=id)
-        time.sleep(0.1)
+        time.sleep(delay)
 
 def send_frames(stub):
+    latest_frame = None
     for frame in generate_frames():
+        client_sent = datetime.utcnow()
+        frame_id = frame.id
+        
         response = stub.StreamFrames(iter([frame]))
-        print(f"Result recived at {datetime.utcnow()}")
+        client_recived = datetime.utcnow()
+        print(f"Result received at {client_recived}")
         for resp in response:
             # Access fields of the Model_Data message
             x1 = resp.x1
@@ -47,6 +74,12 @@ def send_frames(stub):
             y2 = resp.y2
             confidence = resp.confidence
             id = resp.id
+            server_recived = resp.server_recived
+            server_sent = resp.server_sent
+            model_runtime = resp.model_runtime
+
+            write_to_csv(frame_id, client_sent, server_recived ,model_runtime
+                         ,  server_sent , client_recived)
             
             # Draw bounding box on the frame
             frame = cv2.imdecode(np.frombuffer(frame.frame_data, np.uint8), cv2.IMREAD_COLOR)

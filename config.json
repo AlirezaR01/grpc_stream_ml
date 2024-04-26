@@ -1,6 +1,6 @@
 {
-    "camera": 2,
-    "fps": 30,
+    "camera": 0,
+    "delay": 0.1,
     "ip_address": "localhost",
     "port": 50051   
   }

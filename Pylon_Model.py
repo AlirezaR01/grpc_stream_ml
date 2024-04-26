@@ -140,6 +140,7 @@ class Pylon_Model :
         t01 = time.time()
 
         print(f"time = {t01 -t00} s")
+        total_time = t01 - t00
 
         pred = non_max_suppression(
                 pred,
@@ -172,13 +173,13 @@ class Pylon_Model :
                     # Draw the bounding box on the frame
                     cv2.rectangle(Frame, (x1, y1), (x2, y2), colors[0],2)
                     cv2.putText(Frame, f"{label}: {conf:.2f}", (x1, y1 - 5), cv2.FONT_HERSHEY_SIMPLEX, 0.5,2)
-                    return [x1 , y1 , x2 , y2 , conf]
+                    return [x1 , y1 , x2 , y2 , conf] , total_time
                 else:
                     print("Low Confidence - No object detected.")
             else:
                 print("No objects detected.")
             
-        return [0 , 0 , 0 , 0 , 0]
+        return [0 , 0 , 0 , 0 , 0] , total_time
 
 
 

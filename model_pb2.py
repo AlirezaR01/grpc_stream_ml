@@ -14,7 +14,7 @@ _sym_db = _symbol_database.Default()
 
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x0bmodel.proto\x12\x0fvideo_streaming\",\n\nVideoFrame\x12\x12\n\nframe_data\x18\x01 \x01(\x0c\x12\n\n\x02id\x18\x02 \x01(\x05\"\\\n\nModel_Data\x12\n\n\x02x1\x18\x01 \x01(\x05\x12\n\n\x02y1\x18\x02 \x01(\x05\x12\n\n\x02x2\x18\x03 \x01(\x05\x12\n\n\x02y2\x18\x04 \x01(\x05\x12\x12\n\nconfidence\x18\x05 \x01(\x02\x12\n\n\x02id\x18\x06 \x01(\x05\x32]\n\x0bVideoStream\x12N\n\x0cStreamFrames\x12\x1b.video_streaming.VideoFrame\x1a\x1b.video_streaming.Model_Data\"\x00(\x01\x30\x01\x62\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x0bmodel.proto\x12\x0fvideo_streaming\",\n\nVideoFrame\x12\x12\n\nframe_data\x18\x01 \x01(\x0c\x12\n\n\x02id\x18\x02 \x01(\x05\"\xa0\x01\n\nModel_Data\x12\n\n\x02x1\x18\x01 \x01(\x05\x12\n\n\x02y1\x18\x02 \x01(\x05\x12\n\n\x02x2\x18\x03 \x01(\x05\x12\n\n\x02y2\x18\x04 \x01(\x05\x12\x12\n\nconfidence\x18\x05 \x01(\x02\x12\n\n\x02id\x18\x06 \x01(\x05\x12\x16\n\x0eserver_recived\x18\x07 \x01(\t\x12\x13\n\x0bserver_sent\x18\x08 \x01(\t\x12\x15\n\rmodel_runtime\x18\t \x01(\x02\x32]\n\x0bVideoStream\x12N\n\x0cStreamFrames\x12\x1b.video_streaming.VideoFrame\x1a\x1b.video_streaming.Model_Data\"\x00(\x01\x30\x01\x62\x06proto3')
 
 _globals = globals()
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
@@ -23,8 +23,8 @@ if _descriptor._USE_C_DESCRIPTORS == False:
   DESCRIPTOR._options = None
   _globals['_VIDEOFRAME']._serialized_start=32
   _globals['_VIDEOFRAME']._serialized_end=76
-  _globals['_MODEL_DATA']._serialized_start=78
-  _globals['_MODEL_DATA']._serialized_end=170
-  _globals['_VIDEOSTREAM']._serialized_start=172
-  _globals['_VIDEOSTREAM']._serialized_end=265
+  _globals['_MODEL_DATA']._serialized_start=79
+  _globals['_MODEL_DATA']._serialized_end=239
+  _globals['_VIDEOSTREAM']._serialized_start=241
+  _globals['_VIDEOSTREAM']._serialized_end=334
 # @@protoc_insertion_point(module_scope)
