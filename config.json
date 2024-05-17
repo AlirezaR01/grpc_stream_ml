@@ -1,0 +1,8 @@
+{
+    "camera": 0,
+    "delay": 0.1,
+    "ip_address": "localhost",
+    "target":0,
+    "port": 50051   
+  }
+  
